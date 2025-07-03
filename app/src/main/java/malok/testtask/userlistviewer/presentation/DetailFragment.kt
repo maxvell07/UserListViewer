@@ -1,5 +1,7 @@
 package malok.testtask.userlistviewer.presentation
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +43,8 @@ class DetailFragment : Fragment() {
         }
 
         with(binding) {
-            Picasso.get().load(user.avatarUrl).placeholder(R.drawable.ic_launcher_background).into(detailAvatar)
+            Picasso.get().load(user.avatarUrl).placeholder(R.drawable.ic_launcher_background)
+                .into(detailAvatar)
             detailFullName.text = user.fullName
             detailGender.text = user.gender
             detailEmail.text = user.email
@@ -53,7 +56,33 @@ class DetailFragment : Fragment() {
             detailRegistered.text = user.registeredDate
             detailNationality.text = user.nationality
         }
+        binding.detailEmail.setOnClickListener { openEmail(user.email) }
+        binding.detailPhone.setOnClickListener { dialPhone(user.phone) }
+        binding.detailCell.setOnClickListener { dialPhone(user.cell) }
+        binding.detailAddress.setOnClickListener { openMap(user.address) }
     }
+
+    private fun openEmail(email: String) {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:$email")
+        }
+        startActivity(Intent.createChooser(intent, "Send Email"))
+    }
+
+    private fun dialPhone(phone: String) {
+        val intent = Intent(Intent.ACTION_DIAL).apply {
+            data = Uri.parse("tel:$phone")
+        }
+        startActivity(intent)
+    }
+
+    private fun openMap(address: String) {
+        val uri = Uri.parse("geo:0,0?q=${Uri.encode(address)}")
+        val intent = Intent(Intent.ACTION_VIEW, uri)
+        intent.setPackage("com.google.android.apps.maps")
+        startActivity(intent)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
