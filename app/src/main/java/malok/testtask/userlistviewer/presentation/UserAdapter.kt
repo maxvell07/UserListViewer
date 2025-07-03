@@ -55,5 +55,4 @@ class UserAdapter(
         users = newUsers
         notifyDataSetChanged()
     }
-
 }

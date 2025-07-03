@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
@@ -18,6 +19,7 @@ class MainFragment : Fragment() {
 
     private lateinit var viewModel: MainViewModel
     private lateinit var recyclerView: RecyclerView
+    private lateinit var buttonRefresh: Button
     private lateinit var adapter: UserAdapter
 
     override fun onCreateView(
@@ -32,7 +34,7 @@ class MainFragment : Fragment() {
 
         recyclerView = view.findViewById(R.id.rcview)
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
+        buttonRefresh = view.findViewById(R.id.buttonRefresh)
         adapter = UserAdapter(onItemClick = { userId ->
             viewModel.onUserClicked(userId)
         })
@@ -50,6 +52,9 @@ class MainFragment : Fragment() {
         viewModel.users.observe(viewLifecycleOwner) { userList ->
             val uiList = userList?.map { user -> user.mapToListItemUi() } ?: emptyList()
             adapter.setUsers(uiList)
+        }
+        buttonRefresh.setOnClickListener {
+            viewModel.refreshUsers()
         }
 
         viewModel.navigateToUserDetail.observe(viewLifecycleOwner) { userId ->

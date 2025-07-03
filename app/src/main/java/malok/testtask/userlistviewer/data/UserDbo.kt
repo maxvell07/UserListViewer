@@ -1,8 +1,10 @@
-package malok.testtask.userlistviewer.domain
+package malok.testtask.userlistviewer.data
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-
-data class User(
-    val id: String,
+@Entity(tableName = "users")
+data class UserDbo(
+    @PrimaryKey val id: String,
     val fullName: String,
     val gender: String,
     val email: String,
