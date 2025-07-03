@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">UserListViewer</string>
+    <string name="user_avatar">Фото пользователя</string>
+</resources>
